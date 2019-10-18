@@ -1,30 +1,43 @@
 <template>
   <div id="app">
-    <ListRepos 
+    <RepoCard 
       username="bryceremick"
-      sort_by="stargazers_count"
+      repoName="vuehub"
     />
   </div>
 </template>
 
 <script>
-import ListRepos from './components/ListRepos.vue'
+import RepoCard from './components/RepoCard.vue'
 
 export default {
   name: 'app',
   components: {
-    ListRepos
+    RepoCard
   }
 }
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap');
+
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  // font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+html,body, #app{
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+body{
+  background-color: #50E3C2;
 }
 </style>

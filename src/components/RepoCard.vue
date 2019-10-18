@@ -5,6 +5,8 @@
         <p>{{repo.name}}</p>
       </div>
       <div class="repo-card-head-right">
+        <img v-if="showStars" class="repo-card-star-asset" src="../assets/star.svg">
+        <p v-if="showStars" class="repo-card-star-count">{{repo.stargazers_count}}</p>
         <div class="repo-card-language-wrap"><p>{{repo.language}}</p></div>
       </div>
     </div>
@@ -12,7 +14,11 @@
     <div class="repo-card-body">
       <p>{{repo.description}}</p>
     </div>
-
+    <div class="repo-card-divider">
+      <div class="divider-left-line divider-line"><hr></div>
+      <div class="divider-text"><p>Recent Activity</p></div>
+      <div class="divider-right-line divider-line"><hr></div>
+    </div>
     <div class="repo-card-recent-activity">
       <!-- <div class="recent-commit">
         <div class="commit-date">
@@ -54,6 +60,11 @@ export default {
       type: Boolean,
       required: false,
       default: () => true
+    },
+    showStars: {
+      type: Boolean,
+      required: false,
+      default: () => false
     }
     // sort_by: {
     //   type: String,
@@ -77,12 +88,12 @@ export default {
       isRepoRequestDone: false,
       isCommitsRequestDone: false,
       isIssuesRequestDone: false,
-      token: "2f90461014f435b5a9aab27330deaa0bfff9c417",
+      token: "a1a4da6be6bd8225d1827f1fc627c8e4bffa8400",
       remaningRequests: 0,
       totalRequestsAllowed: 0,
       authHeader: {
         headers: {
-          Authorization: "Bearer " + "2f90461014f435b5a9aab27330deaa0bfff9c417" //the token is a variable which holds the token
+          Authorization: "Bearer " + "a1a4da6be6bd8225d1827f1fc627c8e4bffa8400" //the token is a variable which holds the token
         }
       }
     };
@@ -189,10 +200,11 @@ export default {
   border-radius: 20px;
   background-color: #fff;
   grid-template-columns: 1fr;
-  grid-auto-rows: 15% 1fr 60%;
+  grid-auto-rows: 15% 1fr 30px 60%;
   grid-template-areas:
     "head"
     "body"
+    "divider"
     "foot";
 
   .repo-card-head {
@@ -203,7 +215,7 @@ export default {
     flex-direction: row;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    background-color: #0e1fa5;
+    background-color: #d3c1af;
 
     .repo-card-head-left {
       // border: 1px solid green;
@@ -217,7 +229,7 @@ export default {
         font-size: 25px;
         font-weight: 800;
         margin-left: 20px;
-        color: #fff;
+        // color: #fff;
       }
     }
     .repo-card-head-right {
@@ -228,6 +240,15 @@ export default {
       justify-content: flex-end;
       align-items: center;
 
+      .repo-card-star-asset{
+        width: 25px;
+        margin: 2px;
+      }
+      .repo-card-star-count{
+          font-size: 20px;
+          font-weight: 800;
+      }
+
       .repo-card-language-wrap{
         display: flex;
         justify-content: center;
@@ -235,15 +256,16 @@ export default {
         margin-right: 20px;
 
         padding: 3px 10px;
+        margin-left: 15px;
         min-width: 50px;
         border-radius: 100px;
-        background-color: #f1e05a;
+        background-color: #2c3e50;
         p {
         font-size: 16px;
         font-weight: 600;
         margin: 0;
         padding: 0;
-        color: #2c3e50;
+        color: #fff;
       }
       }
     }
@@ -255,6 +277,56 @@ export default {
     justify-content: center;
     align-items: center;
     // border: 1px solid blue;
+  }
+
+  .repo-card-divider{
+    grid-area: divider;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    .divider-left-line{
+      width: 10%;
+      height: 100%;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 20px;
+    }
+    .divider-text{
+      width: 30%;
+      height: 100%;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+      p{
+        font-size: 14px;
+        font-weight: 800;
+        margin: 0px;
+        padding: 0px;
+        transform: translateY(-2px);
+      }
+    }
+    .divider-right-line{
+      width: 60%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-right: 20px;
+    }
+
+    .divider-line{
+
+      hr{
+        width: 100%;
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    }
   }
   
   .repo-card-recent-activity {

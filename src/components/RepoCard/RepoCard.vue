@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Api from '../Api';
+import Api from "../../services/Api";
 import moment from "moment-timezone";
 
 export default {

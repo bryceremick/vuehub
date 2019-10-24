@@ -3,9 +3,12 @@ import { use } from './utils/plugins'
 
 const vuehub = {
 
-    install(Vue, options = {}) {
+    install(Vue, options) {
         // Options
         // setOptions(Object.assign(config, options))
+
+        const { token } = options;
+        Vue.prototype.$GH_TOKEN = token;
 
         // Components
         for (let componentKey in components) {

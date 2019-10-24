@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import Api from "@/services/Api";
+import Api from '../Api';
 import moment from "moment-timezone";
 
 export default {
@@ -88,12 +88,12 @@ export default {
       isRepoRequestDone: false,
       isCommitsRequestDone: false,
       isIssuesRequestDone: false,
-      token: "a1a4da6be6bd8225d1827f1fc627c8e4bffa8400",
+      token: "eb6e7cbae9cc522bad8852f1b162e23226a6c366",
       remaningRequests: 0,
       totalRequestsAllowed: 0,
       authHeader: {
         headers: {
-          Authorization: "Bearer " + "a1a4da6be6bd8225d1827f1fc627c8e4bffa8400" //the token is a variable which holds the token
+          Authorization: "Bearer " + "eb6e7cbae9cc522bad8852f1b162e23226a6c366" //the token is a variable which holds the token
         }
       }
     };
@@ -197,7 +197,7 @@ export default {
   height: 375px;
   color: #4a4a4a;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: #fff;
   grid-template-columns: 1fr;
   grid-auto-rows: 15% 1fr 30px 60%;
@@ -213,8 +213,8 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     background-color: #d3c1af;
 
     .repo-card-head-left {
@@ -276,6 +276,12 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 5px;
+
+    p{
+      font-size: 12px;
+    }
     // border: 1px solid blue;
   }
 

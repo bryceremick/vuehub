@@ -1,27 +1,15 @@
 {
   "name": "vuehub",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A lightweight, yet powerful Vue component suite for displaying Github statistics.",
+  "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Bryce Remick",
+  "license": "ISC",
   "dependencies": {
     "axios": "^0.19.0",
-    "core-js": "^2.6.5",
-    "moment-timezone": "^0.5.27",
-    "vue": "^2.6.10"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.12.0",
-    "@vue/cli-plugin-eslint": "^3.12.0",
-    "@vue/cli-service": "^3.12.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "moment-timezone": "^0.5.27"
   }
 }

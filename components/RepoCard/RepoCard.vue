@@ -5,7 +5,7 @@
         <p>{{repo.name}}</p>
       </div>
       <div class="repo-card-head-right">
-        <img v-if="showStars" class="repo-card-star-asset" src="../assets/star.svg">
+        <img v-if="showStars" class="repo-card-star-asset" src="../../assets/star.svg">
         <p v-if="showStars" class="repo-card-star-count">{{repo.stargazers_count}}</p>
         <div class="repo-card-language-wrap"><p>{{repo.language}}</p></div>
       </div>

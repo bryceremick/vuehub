@@ -3,7 +3,7 @@ import { use } from './utils/plugins'
 
 const vuehub = {
 
-    install(Vue, options) {
+    install(Vue, options = {}) {
         // Options
         // setOptions(Object.assign(config, options))
 

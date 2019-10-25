@@ -1,14 +1,14 @@
 <template>
   <div v-if="isAllDataFetched" class="repo-card">
-    <div class="repo-card-head">
+    <div class="repo-card-head" :style="{ backgroundColor: repoLangColorInverted }">
       <div class="repo-card-head-left">
-        <p>{{repo.name}}</p>
+        <p :style="{color: $getContrastYIQ(repoLangColorInverted)}">{{repo.name}}</p>
       </div>
       <div class="repo-card-head-right">
         <img v-if="showStars" class="repo-card-star-asset" src="../../assets/star.svg" />
         <p v-if="showStars" class="repo-card-star-count">{{repo.stargazers_count}}</p>
-        <div class="repo-card-language-wrap">
-          <p>{{repo.language}}</p>
+        <div class="repo-card-language-wrap" :style="{ backgroundColor: repoLangColor }">
+          <p :style="{color: $getContrastYIQ(repoLangColor)}">{{repo.language}}</p>
         </div>
       </div>
     </div>
@@ -28,23 +28,35 @@
       </div>
     </div>
     <div class="repo-card-recent-activity">
-      <!-- <div class="recent-commit">
-        <div class="commit-date">
-          <p>{{parseDate(commits[0].commit.committer.date)}}</p>
+      <div class="recent-activity-top">
+        <div class="repo-card-recent-commit-wrap">
+          <div class="chip-date-wrap">
+            <p class="chip-date">{{parseDate(recentCommit.commit.committer.date)}}</p>
+          </div>
+          <div class="recent-commit-chip activity-chip">
+            <div class="activity-profile-pic" :style="{backgroundImage: `url(${recentCommit.author.avatar_url})`, 
+            border: `2px solid ${repoLangColor}`}"></div>
+            <p class="activity-username">{{recentCommit.author.login}}</p>
+            <p class="activity-details">{{recentCommit.commit.message}}</p>
+            <img class="activity-icon" src="../../assets/git-commit.svg" alt="">
+          </div>
         </div>
-        <div class="commit-message">
-          <p>{{truncate(commits[0].commit.message, 30)}}</p>
+
+        <div class="repo-card-recent-issue-wrap">
+          <div class="chip-date-wrap">
+            <p class="chip-date">{{parseDate(recentIssue.created_at)}}</p>
+          </div>
+          <div class="recent-issue-chip activity-chip">
+            <div class="activity-profile-pic" :style="{backgroundImage: `url(${recentIssue.user.avatar_url})`, 
+            border: `2px solid ${repoLangColor}`}"></div>
+            <p class="activity-username">{{recentIssue.user.login}}</p>
+            <p class="activity-details">{{recentIssue.title}}</p>
+            <img class="activity-icon" src="../../assets/alert-circle.svg"  alt="">
+          </div>
         </div>
       </div>
 
-      <div class="recent-issue">
-        <div class="issue-number">
-          <p>{{issues[0].number}}</p>
-        </div>
-        <div class="issue-title">
-          <p>{{issues[0].title}}</p>
-        </div>
-      </div>-->
+      <div class="repo-card-activity-stats-wrap"></div>
     </div>
   </div>
 </template>
@@ -98,6 +110,7 @@ export default {
       isIssuesRequestDone: false,
       remaningRequests: 0,
       totalRequestsAllowed: 0,
+      // TODO Handle repos that have no commits/issues
       authHeader: {
         headers: {
           Authorization: "Bearer " + this.$GH_TOKEN //the token is a variable which holds the token
@@ -120,6 +133,18 @@ export default {
         this.isCommitsRequestDone &&
         this.isIssuesRequestDone
       );
+    },
+    recentCommit: function() {
+      return this.commits[0];
+    },
+    recentIssue: function() {
+      return this.issues[0];
+    },
+    repoLangColor: function() {
+      return this.$findLangColor(this.repo.language);
+    },
+    repoLangColorInverted: function() {
+      return this.$invertColor(this.repoLangColor);
     }
   },
   methods: {
@@ -177,9 +202,10 @@ export default {
         });
     },
     parseDate: function(dateString) {
-      return moment(dateString).format("ddd, hA");
+      return moment(dateString).format("MM/DD/YY");
+      // return moment(dateString).format("MM-DD-YY, h:mma");
     },
-    truncate(str, num) {
+    truncate: function(str, num) {
       if (str == "") {
         return str;
       }
@@ -222,7 +248,6 @@ export default {
     flex-direction: row;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    background-color: #d3c1af;
 
     .repo-card-head-left {
       // border: 1px solid green;
@@ -236,7 +261,6 @@ export default {
         font-size: 25px;
         font-weight: 800;
         margin-left: 20px;
-        // color: #fff;
       }
     }
     .repo-card-head-right {
@@ -262,17 +286,15 @@ export default {
         align-items: center;
         margin-right: 20px;
 
-        padding: 3px 10px;
+        padding: 5px 15px;
         margin-left: 15px;
-        min-width: 50px;
+        min-width: 40px;
         border-radius: 100px;
-        background-color: #2c3e50;
         p {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           margin: 0;
           padding: 0;
-          color: #fff;
         }
       }
     }
@@ -284,7 +306,7 @@ export default {
     justify-content: center;
     align-items: center;
 
-    padding: 5px;
+    padding: 5px 10px;
 
     p {
       font-size: 12px;
@@ -343,55 +365,93 @@ export default {
 
   .repo-card-recent-activity {
     grid-area: foot;
-    // border: 1px solid purple;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 0px 20px 20px 20px;
 
-    p {
-      margin: 0px;
-      padding: 0px;
-    }
+    .recent-activity-top {
 
-    .recent-commit {
+      height: 50%;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: row;
-      width: 100%;
-      .commit-date {
-        width: 30%;
-        p {
-          font-size: 12px;
-        }
-      }
-      .commit-message {
-        width: 60%;
-        p {
-          font-size: 12px;
-        }
-      }
-    }
-    .recent-issue {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: row;
-      width: 100%;
+      flex-direction: column;
 
-      .issue-number {
-        width: 30%;
-        p {
-          font-size: 12px;
+
+      .repo-card-recent-commit-wrap, .repo-card-recent-issue-wrap {
+        height: 50%;
+        width: 100%;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+
+        .chip-date-wrap{
+          height: 100%;
+          width: 15%;
+          margin-right: 5px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          // border: 1px solid red;
+
+          p{
+            margin: 0px;
+            padding: 0px;
+            font-weight: 600;
+            font-size: 14px;
+          }
+        }
+
+        .activity-chip{
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex-direction: row;
+          padding: 5px;
+          // min-width: 50%;
+          height: 30px;
+          background-color: #E6E6E6;
+          border-radius: 50px;
+
+          .activity-profile-pic{
+            height: 25px;
+            width: 25px;
+            border-radius: 100%;
+            margin: 0px 1px;
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover; 
+          }
+          .activity-username{
+            font-size: 12px;
+            font-weight: 800;
+            margin: 0px 5px;
+            border-right: 1px solid rgba(0, 0, 0, 0.3);
+            padding-right: 10px;
+          }
+          .activity-details{
+            font-size: 12px;
+            font-weight: 400;
+            margin: 0px 5px;
+          }
+          .activity-icon{
+            width: 20px;
+            margin: 0px 5px 0px 10px;
+          }
         }
       }
-      .issue-title {
-        width: 60%;
-        p {
-          font-size: 12px;
-        }
-      }
+
+
+    }
+
+    .repo-card-activity-stats-wrap {
+      height: 50%;
+      width: 100%;
     }
   }
 }
